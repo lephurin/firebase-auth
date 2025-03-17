@@ -7,8 +7,8 @@ import { NextAuthOptions } from "next-auth";
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: "440708524758-hrv2trtjavtfokp08gka5nsuvlmb81cq.apps.googleusercontent.com",
-      clientSecret: "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",
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
     CredentialsProvider({
       name: "Email & Password",

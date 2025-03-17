@@ -1,6 +1,6 @@
 import admin from "firebase-admin";
 
-var serviceAccount = require("../../file/fir-auth-ab97e-firebase-adminsdk-fbsvc-e189afe9cc.json");
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY || "{}");
 
 if (!admin.apps.length) {
   admin.initializeApp({
