@@ -2,9 +2,7 @@ import admin from "firebase-admin";
 
 let serviceAccount;
 try {
-  serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY 
-    ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
-    : null;
+  serviceAccount = require("../../file/fir-auth-ab97e-firebase-adminsdk-fbsvc-e189afe9cc.json")
 } catch (error) {
   console.error('Error parsing Firebase service account:', error);
   serviceAccount = null;
