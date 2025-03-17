@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { auth } from "@/lib/firebaseAdmin";
 import { NextAuthOptions } from "next-auth";
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -38,4 +38,4 @@ const authOptions: NextAuthOptions = {
 
 const handler = NextAuth(authOptions);
 
-export const { GET, POST } = handler;
+export { handler as GET, handler as POST };
