@@ -26,7 +26,7 @@ jobs:
 
       - name: Create .env File
         run: |
-          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env.local
+          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" > .env.local
           echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" >> .env.local
           echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env.local
           echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env.local
@@ -36,12 +36,17 @@ jobs:
           echo "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}" >> .env.local
           echo "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}" >> .env.local
           echo "NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}" >> .env.local
-          echo 'FIREBASE_SERVICE_ACCOUNT_KEY='"'"${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}"'"'' >> .env.local
+          # Create the Firebase service account key in a separate step
+          node -e "fs.writeFileSync('.env.local', fs.readFileSync('.env.local', 'utf8') + '\nFIREBASE_SERVICE_ACCOUNT_KEY=' + JSON.stringify(process.env.FIREBASE_SA_KEY) + '\n')"
+        env:
+          FIREBASE_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
 
       - name: Debug Environment Variables
         run: |
-          echo "Checking .env.local contents:"
-          cat .env.local
+          echo "Checking .env.local file exists:"
+          ls -la .env.local
+          echo "First few lines of .env.local (not showing secrets):"
+          head -n 3 .env.local
 
       - name: Build Next.js App
         run: npm run build
